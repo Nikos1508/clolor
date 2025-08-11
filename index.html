@@ -1,0 +1,109 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Clolor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>🎨 Clolor Match Challenge</h1>
+    <div id="gameArea">
+
+        <div id="targetColor" class="color-display"></div>
+        <div class="picker-section">
+            <input type="color" id="colorPicker">
+            <button id="submitGuess">Submit Guess</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <div id="finalScreen" class="final-screen" style="display:none;">
+        <h2>Game Over!</h2>
+        <h3>Your Total Score: <span id="finalScore"></span></h3>
+        <div class="final-rounds" id="roundSummaries"></div>
+    </div>
+
+    <script>
+        function randomColor() {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return {r, g, b};
+        }
+        function rgbToHex(r, g, b) {
+            return "#" + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? "0" + hex : hex;
+            }).join("");
+        }
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            const bigint = parseInt(hex, 16);
+            const r = (bigint >> 16) & 255;
+            const g = (bigint >> 8) & 255;
+            const b = bigint & 255;
+            return {r, g, b};
+        }
+
+        let target;
+        let currentRound = 1;
+        let totalScore = 0;
+        let roundsData = [];
+
+        const targetDiv = document.getElementById("targetColor");
+        const resultDiv = document.getElementById("result");
+
+        function startRound() {
+            target = randomColor();
+            targetDiv.style.backgroundColor = rgbToHex(target.r, target.g, target.b);
+            resultDiv.innerHTML = `Round ${currentRound} of 5`;
+        }
+
+        document.getElementById("submitGuess").addEventListener("click", () => {
+            const userColor = document.getElementById("colorPicker").value;
+            const userRgb = hexToRgb(userColor);
+            const diff = Math.abs(userRgb.r - target.r) +
+                         Math.abs(userRgb.g - target.g) +
+                         Math.abs(userRgb.b - target.b);
+            let score = 500 - diff;
+            if (score < 0) score = 0;
+            totalScore += score;
+
+            roundsData.push({
+                round: currentRound,
+                target: rgbToHex(target.r, target.g, target.b),
+                guess: userColor,
+                score: score
+            });
+
+            if (currentRound < 5) {
+                currentRound++;
+                startRound();
+            } else {
+                endGame();
+            }
+        });
+
+        function endGame() {
+            document.getElementById("gameArea").style.display = "none";
+            document.getElementById("finalScreen").style.display = "block";
+            document.getElementById("finalScore").textContent = totalScore;
+            const roundSummaries = document.getElementById("roundSummaries");
+            roundSummaries.innerHTML = '';
+            roundsData.forEach(r => {
+                const div = document.createElement("div");
+                div.className = "round-summary";
+                div.innerHTML = `
+                    <p><strong>Round ${r.round}</strong></p>
+                    <div class="color-box" style="background:${r.target}"></div>
+                    <p>Target</p>
+                    <div class="color-box" style="background:${r.guess}"></div>
+                    <p>Guess (${r.score} pts)</p>
+                `;
+                roundSummaries.appendChild(div);
+            });
+        }
+
+        startRound();
+    </script>
+</body>

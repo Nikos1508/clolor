@@ -1,0 +1,89 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #faf8e0, #FCE4EC);
+    margin: 0;
+    color: #333;
+}
+h1 {
+    font-size: 2em;
+    margin-bottom: 1rem;
+}
+.color-display {
+    width: 200px;
+    height: 200px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    margin-bottom: 1rem;
+}
+.picker-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+input[type="color"] {
+    border: none;
+    width: 80px;
+    height: 80px;      /* same height */
+    cursor: pointer;
+    border-radius: 50%; /* perfect circle */
+    padding: 0;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
+button {
+    background: #00796B;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+button:hover {
+    background: #004D40;
+}
+.result {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+.color-results {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+.color-box {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.final-screen {
+    text-align: center;
+}
+.final-rounds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+.round-summary {
+    background: white;
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 140px;
+}
